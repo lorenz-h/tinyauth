@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+    <form id="login-form" accept-charset="utf-8"
+        enctype="application/x-www-form-urlencoded" class="login-form">
+
+        <label for="user">Username</label>
+        <input id="user" name="user" type="text" value="" autofocus/>
+        <label style="margin-top:1em" for="password">Password</label>
+        <input id="password" name="password" type="password" value=""/>
+
+        <input class="button" type="button" id="login-button" style="margin-top: 1em" value="login"/>
+        <label id="login-error-message-box" style="margin-top:1em" for="login-button"></label>
+    </form>
+    <script>
+
+        const loginButton = document.getElementById("login-button");
+        loginButton.addEventListener("click", submitLogin)
+
+        function submitLogin() {
+            console.log("Submitting login form.")
+            const formElement = document.getElementById("login-form");
+            const data = new URLSearchParams(new FormData(formElement));
+            fetch("/auth/get_cookie", {
+                method: 'post',
+                body: data,
+            })
+            .then(response => {
+                if (!response.ok) {
+                    console.log("Got response from login: " + response.statusText)
+                    document.getElementById("login-error-message-box").innerHTML = "Login error: " + response.statusText;
+                } else {
+                    window.location.href = "/"
+                }
+
+            });
+        }
+    </script>
+    <style>
+        .login-form {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .login-form > label {
+            font-size: 1em;
+            margin-bottom: 0.5em;
+        }
+
+        .login-form > input {
+            font-size: 1em;
+            height: 1.5em;
+        }
+
+        .button {
+            background-color: dimgray;
+            border: none;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 1em;
+            padding: 0.25em 0.5em;
+            height: auto!important;
+        }
+
+        html, body {
+            height: 100%;
+        }
+        body {
+            margin: 0;
+            font-family: sans-serif;
+        }
+    </style>
+</body>
+</html>

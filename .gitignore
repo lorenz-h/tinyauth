@@ -1,0 +1,4 @@
+*.egg-info*
+/tinyauth_data/
+*__pycache__*
+*.pyc
